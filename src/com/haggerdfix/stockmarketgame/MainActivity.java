@@ -33,7 +33,9 @@ public class MainActivity extends Activity {
 			error.setVisibility(View.INVISIBLE);
 			Button rollBtn = (Button) v.findViewById(R.id.roll_button);
 			rollBtn.setVisibility(View.VISIBLE);
-			
+			/*TextView rollCount = (TextView) v.findViewById(R.id.rollCount);
+			rollCount.setText("0");
+			rollCount.setVisibility(View.VISIBLE);*/
 			
 			refreshLabels(v.getRootView());
 
@@ -51,6 +53,10 @@ public class MainActivity extends Activity {
 		if (rollInfo.getVisibility() == View.INVISIBLE) {
 			rollInfo.setVisibility(View.VISIBLE);
 		}
+		/*TextView rollCount = (TextView) v.findViewById(R.id.rollCount);
+		int i = Integer.parseInt(rollCount.getText().toString());
+		i++;
+		rollCount.setText(String.valueOf(i));*/
 		refreshLabels(v);
 	}
 

@@ -14,8 +14,8 @@ public class die {
 	
 	public String rollDie() {
 		Random gen = new Random();
-		int i = gen.nextInt(100);
-		double prob = 100 / faces.length;
+		int i = gen.nextInt(1000000);
+		double prob = 1000000 / faces.length;
 		String result = "";
 		
 		for (int x = (faces.length - 1); x >= 0; x--) {

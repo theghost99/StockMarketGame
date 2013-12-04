@@ -1,9 +1,12 @@
 package com.haggerdfix.stockmarketgame;
 
+import java.util.LinkedList;
+
 public class game {
 	private gamePiece[] pieces = new gamePiece[6];
 	private die[] dice = new die[3];
 	private String name;
+	private LinkedList<String> history;
 	
 	public game(String n) {
 		name = n;
@@ -24,32 +27,35 @@ public class game {
 	public String roll() {
 		gamePiece piece = getPiece(dice[0].rollDie());
 		String action = dice[1].rollDie();
+		String result = "";
 		if (action == "Div") {
 			if (piece.isDiv()) {
-				return piece.getName() + " " + action + " " + dice[2].rollDie();
+				result = piece.getName() + " " + action + " " + dice[2].rollDie();
 			}
 			else {
-				return piece.getName() + " Not Paying";
+				result =  piece.getName() + " Not Paying";
 			}
 		}
 		else if (action == "Up") {
 			String roll = dice[2].rollDie();
 			if (piece.up(Integer.parseInt(roll))) {
-				return piece.getName() + " SPLIT!!";
+				result =  piece.getName() + " SPLIT!!";
 			}
 			else {
-				return piece.getName() + " Up " + roll;
+				result = piece.getName() + " Up " + roll;
 			}
 		}
 		else {
 			String roll = dice[2].rollDie();
 			if (piece.down(Integer.parseInt(roll))) {
-				return piece.getName() + " RESETS!!";
+				result = piece.getName() + " RESETS!!";
 			}
 			else {
-				return piece.getName() + " Down " + roll;
+				result = piece.getName() + " Down " + roll;
 			}
 		}
+		history.add(result);
+		return result;
 	}
 	
 	private gamePiece getPiece(String n) {
@@ -68,5 +74,9 @@ public class game {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public LinkedList<String> getHistory() {
+		return history;
 	}
 }
