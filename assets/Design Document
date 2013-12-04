@@ -1,0 +1,77 @@
+2 Choices - Create Game, Join Game (implement Join later)
+
+==FOR BOARD==
+
+
+Create Game:
+  - Allows a game name
+  - Allows choice to have you roll manually (click of a button), or automatically after so many seconds (user specifies time)
+  - Starts all stocks at 100
+  - Displays Roll Button (if manually is selected, start button if not)
+
+Once start button is hit, countdown to next roll is displayed (good countdown GUI object)
+
+When Roll is hit or time to roll happens
+  - Rolls dice
+    - Rolls # (5, 10, or 20) all 1/3 probability
+    - Rolls Action (Div, Up, or Down) all 1/3 probability
+    - Rolls Stock (Grain, Industrial, Bonds, Oil, Silver, or Gold) all 1/6 probability
+  - Displays Roll
+  - If Up or Down is rolled, change value of the stock
+  - Keeps track of each roll
+  - Sends data to each client
+  	- data will be formatted in as int[3]
+  		- int[0] = stock number (0-5)
+  		- int[1] = action (0 = Div, 1 = Up, 2 = Down)
+  		- int[2] = amount (1 = 5, 2 = 10, 3 = 20, 0 = special case:
+  			- for div, 0 means no payout, for Up, 0 means SPLIT, for Down, 0 means RESET
+
+
+
+
+==FOR PLAYER==
+
+
+Join Game:
+  - Allows a player to join a game (Roll/Start cannot have been pressed at all)
+  - Gives player $5000 to spend on stocks
+  - Displays Players stock amounts, cash, and current total value
+
+On Roll
+  - If Div - Give cash to player if stock is owned
+  - If Up/Down - Adjust total value, if stock is owned, or adjust stock amount if Split/Reset
+
+Buy/Sell Stocks
+  - Allows player to buy/sell any stock at current price (if enough cash is on hand)
+  - To Buy
+    - Has amount of stock, and kind wanted in increments of 500, and displays price (allows to buy if enough cash on hand)
+  - To Sell
+    - allows person to select kind and amount (up to max they have), and displays amount of money they'd get
+    - Allows person to trade straight across to another stock, displays amount of other stocks they'd get for set amount.
+    
+Buying/Selling process:
+
+1 - Player clicks '+' (for buying) or '-' (for selling) beside the stock they want to select
+2.1 - If buying: player can select increments of 500 to purchase.
+		- As selection changes, display the amount it will cost
+		- Don't allow a user to select more than they can afford
+2.2 - If selling: player can select increments of 500 to sell
+		- As selection changes, display the amount they will receive
+		(Eventually) - Display the other stocks that this could be traded to
+3 - Person clicks buy/sell
+4.1 - if Buying: money is removed from player, and stocks added
+4.2 - if Selling: stock is removed from player, and money added (eventually be able to trade stocks)
+5 - Go back to main player display with updated Net Value and stocks
+
+When a roll has occured:
+
+1 - Receive data from board
+1.1 - I need to figure out what to do if the player is buying/selling at this time, possibilities:
+		- go back to main Player screen with updated values
+		- display value of the roll as a short pop-over, and update the values of the sale
+2 - Parse data (int[3] as described above)
+3.1 - IF ((int[1] == 1 || 2 ) && (int[2] != 0)) THEN: update net value
+3.2 - IF ((int[1] == 1 || 2 ) && (int[2] == 0)) THEN: remove/add stock, and reset value of that stock
+3.3 - IF ((int[1] == 0) && (int[2] != 0)) THEN: update cash, and net value accordingly
+3.4 - IF ((int[1] == 0) && (int[2] == 0)) THEN: DO NOTHING!!
+4 - Update main Player screen
