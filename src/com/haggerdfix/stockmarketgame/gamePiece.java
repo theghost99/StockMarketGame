@@ -3,6 +3,7 @@ package com.haggerdfix.stockmarketgame;
 public class gamePiece {
 	private String name;
 	private int value;
+	private int[] values = new int[]{5,10,20};
 	
 	public gamePiece(String n) {
 		name = n;
@@ -23,7 +24,7 @@ public class gamePiece {
 	}
 	
 	public boolean up(int v) {
-		value += v;
+		value += values[v-1];
 		if (value >= 200) {
 			value = 100;
 			return true;
@@ -34,7 +35,7 @@ public class gamePiece {
 	}
 	
 	public boolean down(int v) {
-		value -= v;
+		value -= values[v-1];
 		if (value <= 0) {
 			value = 100;
 			return true;

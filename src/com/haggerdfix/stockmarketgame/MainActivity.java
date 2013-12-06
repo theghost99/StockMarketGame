@@ -114,8 +114,8 @@ public class MainActivity extends Activity {
 		TextView nameLbl = null;
 		TextView valueLbl = null;
 		LinkedList<gamePiece> pieces = game.getPieces();
-		int x = 5;
-		for (gamePiece piece = pieces.pop(); piece != null; piece = pieces.pop()) {
+		for (int x = 0; x < pieces.size(); x++) {
+			gamePiece piece = pieces.get(x);
 			switch (x) {
 			case 0:
 				nameLbl = (TextView) v.findViewById(R.id.stock1Lbl);
@@ -129,8 +129,8 @@ public class MainActivity extends Activity {
 			case 1:
 				nameLbl = (TextView) v.findViewById(R.id.stock2Lbl);
 				valueLbl = (TextView) v.findViewById(R.id.stock2Value);
-				nameLbl.setVisibility(View.VISIBLE);
 				nameLbl.setText(this.getString(R.string.stock2_name));
+				nameLbl.setVisibility(View.VISIBLE);
 				valueLbl.setVisibility(View.VISIBLE);
 				valueLbl.setText(piece.getValue());
 				break;
@@ -174,7 +174,6 @@ public class MainActivity extends Activity {
 			default:
 				break;
 			}
-			x--;
 		}
 	}
 
