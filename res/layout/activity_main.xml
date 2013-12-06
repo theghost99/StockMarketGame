@@ -83,139 +83,133 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/grainLbl"
-        android:layout_marginLeft="20dp"
+        android:id="@+id/stock1Lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-		android:layout_below="@+id/gameNameLbl"
-        android:text="@string/grain_name"
-        android:textColor="@color/grain"
+        android:layout_below="@+id/gameNameLbl"
+        android:layout_marginLeft="20dp"
+        android:text="@string/stock1_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/stock1_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/grainValue"
+        android:id="@+id/stock1Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:layout_below="@+id/gameNameLbl"
-        android:layout_toRightOf="@+id/grainLbl"
-        android:text="@string/grain_value"
-        android:textColor="@color/grain"
+        android:layout_below="@+id/gameNameLbl"
+        android:layout_toRightOf="@+id/stock1Lbl"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/stock1_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/industrialLbl"
+        android:id="@+id/stock2Lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/gameNameLbl"
         android:layout_centerHorizontal="true"
-		android:layout_below="@+id/gameNameLbl"
-        android:text="@string/industrial_name"
-        android:textColor="@color/industrial"
+        android:text="@string/stock2_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/stock2_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/industrialValue"
+        android:id="@+id/stock2Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:layout_below="@+id/gameNameLbl"
-        android:layout_toRightOf="@+id/industrialLbl"
-        android:text="@string/industrial_value"
-        android:textColor="@color/industrial"
+        android:layout_below="@+id/gameNameLbl"
+        android:layout_toRightOf="@+id/stock2Lbl"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/stock2_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/bondsLbl"
+        android:id="@+id/stock3Lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/bondsValue"
-		android:layout_below="@+id/gameNameLbl"
-        android:text="@string/bonds_name"
-        android:textColor="@color/bonds"
+        android:layout_below="@+id/gameNameLbl"
+        android:layout_toLeftOf="@+id/stock3Value"
+        android:text="@string/stock3_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/stock3_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/bondsValue"
-        android:layout_marginRight="20dp"
+        android:id="@+id/stock3Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:layout_below="@+id/gameNameLbl"
         android:layout_alignParentRight="true"
-        android:text="@string/bonds_value"
-        android:textColor="@color/bonds"
+        android:layout_below="@+id/gameNameLbl"
+        android:layout_marginRight="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/stock3_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/oilLbl"
-        android:layout_marginLeft="20dp"
+        android:id="@+id/stock4Lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/grainLbl"
-        android:text="@string/oil_name"
-        android:textColor="@color/oil"
+        android:layout_below="@+id/stock1Lbl"
+        android:layout_marginLeft="20dp"
+        android:text="@string/stock4_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/stock4_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/oilValue"
+        android:id="@+id/stock4Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/grainLbl"
-        android:layout_alignLeft="@+id/grainValue"
-        android:text="@string/oil_value"
-        android:textColor="@color/oil"
+        android:layout_alignLeft="@+id/stock1Value"
+        android:layout_below="@+id/stock1Lbl"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/stock4_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/silverLbl"
+        android:id="@+id/stock5Lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/industrialLbl"
-        android:layout_below="@+id/grainLbl"
-        android:text="@string/silver_name"
-        android:textColor="@color/silver"
+        android:layout_alignLeft="@+id/stock2Lbl"
+        android:layout_below="@+id/stock1Lbl"
+        android:text="@string/stock5_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/stock5_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/silverValue"
+        android:id="@+id/stock5Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/grainLbl"
-        android:layout_alignLeft="@+id/industrialValue"
-        android:text="@string/silver_value"
-        android:textColor="@color/silver"
+        android:layout_alignLeft="@+id/stock2Value"
+        android:layout_below="@+id/stock1Lbl"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/stock5_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/goldLbl"
+        android:id="@+id/stock6Lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/bondsLbl"
-        android:layout_below="@+id/grainLbl"
-        android:text="@string/gold_name"
-        android:textColor="@color/gold"
+        android:layout_alignLeft="@+id/stock3Lbl"
+        android:layout_below="@+id/stock1Lbl"
+        android:text="@string/stock6_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/stock6_color"
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/goldValue"
-        android:layout_marginRight="20dp"
+        android:id="@+id/stock6Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/grainLbl"
         android:layout_alignParentRight="true"
-        android:text="@string/gold_value"
-        android:textColor="@color/gold"
+        android:layout_below="@+id/stock1Lbl"
+        android:layout_marginRight="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/stock6_color"
         android:visibility="invisible" />
 
 </RelativeLayout>

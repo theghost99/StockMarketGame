@@ -11,13 +11,13 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int bonds=0x7f060002;
         public static final int error=0x7f060006;
-        public static final int gold=0x7f060005;
-        public static final int grain=0x7f060000;
-        public static final int industrial=0x7f060001;
-        public static final int oil=0x7f060003;
-        public static final int silver=0x7f060004;
+        public static final int stock1_color=0x7f060000;
+        public static final int stock2_color=0x7f060001;
+        public static final int stock3_color=0x7f060002;
+        public static final int stock4_color=0x7f060003;
+        public static final int stock5_color=0x7f060004;
+        public static final int stock6_color=0x7f060005;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -34,51 +34,47 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f090013;
-        public static final int bondsLbl=0x7f09000b;
-        public static final int bondsValue=0x7f09000c;
         public static final int errorLbl=0x7f090003;
         public static final int gameNameLbl=0x7f090005;
         public static final int gameNameTxt=0x7f090002;
-        public static final int goldLbl=0x7f090011;
-        public static final int goldValue=0x7f090012;
-        public static final int grainLbl=0x7f090007;
-        public static final int grainValue=0x7f090008;
-        public static final int industrialLbl=0x7f090009;
-        public static final int industrialValue=0x7f09000a;
         public static final int new_game_button=0x7f090000;
-        public static final int oilLbl=0x7f09000d;
-        public static final int oilValue=0x7f09000e;
         public static final int rollCount=0x7f090004;
         public static final int rollInfo=0x7f090006;
         public static final int roll_button=0x7f090001;
-        public static final int silverLbl=0x7f09000f;
-        public static final int silverValue=0x7f090010;
+        public static final int stock1Lbl=0x7f090007;
+        public static final int stock1Value=0x7f090008;
+        public static final int stock2Lbl=0x7f090009;
+        public static final int stock2Value=0x7f09000a;
+        public static final int stock3Lbl=0x7f09000b;
+        public static final int stock3Value=0x7f09000c;
+        public static final int stock4Lbl=0x7f09000d;
+        public static final int stock4Value=0x7f09000e;
+        public static final int stock5Lbl=0x7f09000f;
+        public static final int stock5Value=0x7f090010;
+        public static final int stock6Lbl=0x7f090011;
+        public static final int stock6Value=0x7f090012;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int activity_new_game=0x7f030001;
     }
     public static final class menu {
         public static final int main=0x7f080000;
     }
     public static final class string {
+        public static final int action1_name=0x7f05000b;
+        public static final int action2_name=0x7f05000c;
+        public static final int action3_name=0x7f05000d;
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
-        public static final int bonds_name=0x7f050007;
-        public static final int bonds_value=0x7f050008;
-        public static final int game_name_label=0x7f05000f;
-        public static final int gold_name=0x7f05000d;
-        public static final int gold_value=0x7f05000e;
-        public static final int grain_name=0x7f050003;
-        public static final int grain_value=0x7f050004;
-        public static final int industrial_name=0x7f050005;
-        public static final int industrial_value=0x7f050006;
+        public static final int game_name_label=0x7f050009;
         public static final int new_game=0x7f050002;
-        public static final int oil_name=0x7f050009;
-        public static final int oil_value=0x7f05000a;
-        public static final int roll_btn=0x7f050010;
-        public static final int silver_name=0x7f05000b;
-        public static final int silver_value=0x7f05000c;
+        public static final int roll_btn=0x7f05000a;
+        public static final int stock1_name=0x7f050003;
+        public static final int stock2_name=0x7f050004;
+        public static final int stock3_name=0x7f050005;
+        public static final int stock4_name=0x7f050006;
+        public static final int stock5_name=0x7f050007;
+        public static final int stock6_name=0x7f050008;
     }
     public static final class style {
         /** 

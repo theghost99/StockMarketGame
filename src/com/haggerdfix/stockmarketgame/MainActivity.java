@@ -1,5 +1,7 @@
 package com.haggerdfix.stockmarketgame;
 
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,7 +25,7 @@ public class MainActivity extends Activity {
 		EditText gameName = (EditText) v.findViewById(R.id.gameNameTxt);
 		TextView error = (TextView) v.findViewById(R.id.errorLbl);
 		if (gameName != null && !gameName.getText().toString().equals("")) {
-			game = new game(gameName.getText().toString());
+			game = new game(gameName.getText().toString(), this);
 			gameName.setVisibility(View.GONE);
 			TextView gameNameLbl = (TextView) v.findViewById(R.id.gameNameLbl);
 			gameNameLbl.setText(game.getName());
@@ -37,7 +39,7 @@ public class MainActivity extends Activity {
 			rollCount.setText("0");
 			rollCount.setVisibility(View.VISIBLE);*/
 			
-			refreshLabels(v.getRootView());
+			refreshAllLabels(v.getRootView());
 
 		}
 		else {
@@ -49,74 +51,130 @@ public class MainActivity extends Activity {
 	public void rollButton(View v) {
 		v = v.getRootView();
 		TextView rollInfo = (TextView) v.findViewById(R.id.rollInfo);
-		rollInfo.setText(game.roll());
+		rollInfo.setText(roll());
 		if (rollInfo.getVisibility() == View.INVISIBLE) {
 			rollInfo.setVisibility(View.VISIBLE);
 		}
-		/*TextView rollCount = (TextView) v.findViewById(R.id.rollCount);
-		int i = Integer.parseInt(rollCount.getText().toString());
-		i++;
-		rollCount.setText(String.valueOf(i));*/
-		refreshLabels(v);
+		refreshAllLabels(v);
+	}
+	
+	public String roll() {
+		String result = "";
+		int[] roll = game.roll();
+		
+		result = game.getPieces().get(roll[0]).getName() + " ";
+		if (roll[2] == 0) {
+			switch (roll[1]) {
+			case 0:
+				result = result + "Isn't Paying!";
+				break;
+			
+			case 1:
+				result = result + "SPLIT!";
+				break;
+				
+			case 2:
+				result = result + "RESET!";
+				break;
+			}
+		}
+		else {
+			switch (roll[1]) {
+			case 0:
+				result = result + "DIV ";
+				break;
+			
+			case 1:
+				result = result + "UP ";
+				break;
+				
+			case 2:
+				result = result + "DOWN ";
+				break;
+			}
+			switch (roll[2]) {
+			case 1:
+				result = result + "5";
+				break;
+				
+			case 2:
+				result = result + "10";
+				break;
+				
+			case 3:
+				result = result + "20";
+				break;
+			}
+		}
+		
+		return result;
 	}
 
-	public void refreshLabels(View v) {
-		TextView valueLbl = null;
+	public void refreshAllLabels(View v) {
 		TextView nameLbl = null;
-		gamePiece[] pieces = game.getPieces();
-		for (int x = 0; x < pieces.length; x++) {
+		TextView valueLbl = null;
+		LinkedList<gamePiece> pieces = game.getPieces();
+		int x = 5;
+		for (gamePiece piece = pieces.pop(); piece != null; piece = pieces.pop()) {
 			switch (x) {
 			case 0:
-				nameLbl = (TextView) v.findViewById(R.id.grainLbl);
-				valueLbl = (TextView) v.findViewById(R.id.grainValue);
+				nameLbl = (TextView) v.findViewById(R.id.stock1Lbl);
+				valueLbl = (TextView) v.findViewById(R.id.stock1Value);
+				nameLbl.setText(this.getString(R.string.stock1_name));
 				nameLbl.setVisibility(View.VISIBLE);
 				valueLbl.setVisibility(View.VISIBLE);
-				valueLbl.setText(pieces[x].getValue());
+				valueLbl.setText(piece.getValue());
 				break;
 
 			case 1:
-				nameLbl = (TextView) v.findViewById(R.id.industrialLbl);
-				valueLbl = (TextView) v.findViewById(R.id.industrialValue);
+				nameLbl = (TextView) v.findViewById(R.id.stock2Lbl);
+				valueLbl = (TextView) v.findViewById(R.id.stock2Value);
 				nameLbl.setVisibility(View.VISIBLE);
+				nameLbl.setText(this.getString(R.string.stock2_name));
 				valueLbl.setVisibility(View.VISIBLE);
-				valueLbl.setText(pieces[x].getValue());
+				valueLbl.setText(piece.getValue());
 				break;
 
 			case 2:
-				nameLbl = (TextView) v.findViewById(R.id.bondsLbl);
-				valueLbl = (TextView) v.findViewById(R.id.bondsValue);
+				nameLbl = (TextView) v.findViewById(R.id.stock3Lbl);
+				valueLbl = (TextView) v.findViewById(R.id.stock3Value);
+				nameLbl.setText(this.getString(R.string.stock3_name));
 				nameLbl.setVisibility(View.VISIBLE);
 				valueLbl.setVisibility(View.VISIBLE);
-				valueLbl.setText(pieces[x].getValue());
+				valueLbl.setText(piece.getValue());
 				break;
 
 			case 3:
-				nameLbl = (TextView) v.findViewById(R.id.oilLbl);
-				valueLbl = (TextView) v.findViewById(R.id.oilValue);
+				nameLbl = (TextView) v.findViewById(R.id.stock4Lbl);
+				valueLbl = (TextView) v.findViewById(R.id.stock4Value);
+				nameLbl.setText(this.getString(R.string.stock4_name));
 				nameLbl.setVisibility(View.VISIBLE);
 				valueLbl.setVisibility(View.VISIBLE);
-				valueLbl.setText(pieces[x].getValue());
+				valueLbl.setText(piece.getValue());
 				break;
 
 			case 4:
-				nameLbl = (TextView) v.findViewById(R.id.silverLbl);
-				valueLbl = (TextView) v.findViewById(R.id.silverValue);
+				nameLbl = (TextView) v.findViewById(R.id.stock5Lbl);
+				valueLbl = (TextView) v.findViewById(R.id.stock5Value);
+				nameLbl.setText(this.getString(R.string.stock5_name));
 				nameLbl.setVisibility(View.VISIBLE);
 				valueLbl.setVisibility(View.VISIBLE);
-				valueLbl.setText(pieces[x].getValue());
+				valueLbl.setText(piece.getValue());
 				break;
 
 			case 5:
-				nameLbl = (TextView) v.findViewById(R.id.goldLbl);
-				valueLbl = (TextView) v.findViewById(R.id.goldValue);
+				nameLbl = (TextView) v.findViewById(R.id.stock6Lbl);
+				valueLbl = (TextView) v.findViewById(R.id.stock6Value);
+				nameLbl.setText(this.getString(R.string.stock6_name));
 				nameLbl.setVisibility(View.VISIBLE);
 				valueLbl.setVisibility(View.VISIBLE);
-				valueLbl.setText(pieces[x].getValue());
+				valueLbl.setText(piece.getValue());
 				break;
 
 			default:
 				break;
 			}
+			x--;
 		}
 	}
 

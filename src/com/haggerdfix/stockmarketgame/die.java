@@ -3,24 +3,21 @@ package com.haggerdfix.stockmarketgame;
 import java.util.Random;
 
 public class die {
-	private String[] faces;
+	private int sides;
 	
-	public die(String[] v) {
-		faces = new String[v.length]; 
-		for (int x = 0; x < v.length; x++) {
-			faces[x] = v[x];
-		}
+	public die(int v) {
+		sides = v;
 	}
 	
-	public String rollDie() {
+	public int rollDie() {
 		Random gen = new Random();
 		int i = gen.nextInt(1000000);
-		double prob = 1000000 / faces.length;
-		String result = "";
+		double prob = 1000000 / sides;
+		int result = -1;
 		
-		for (int x = (faces.length - 1); x >= 0; x--) {
-			if (i > x * prob) {
-				result =  faces[x];
+		for (int x = 1; x <= sides; x++) {
+			if (i < x * prob) {
+				result =  x;
 				break;
 			}
 		}

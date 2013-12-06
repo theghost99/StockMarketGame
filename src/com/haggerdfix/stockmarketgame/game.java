@@ -2,73 +2,59 @@ package com.haggerdfix.stockmarketgame;
 
 import java.util.LinkedList;
 
+import android.content.Context;
+
 public class game {
-	private gamePiece[] pieces = new gamePiece[6];
-	private die[] dice = new die[3];
+	private LinkedList<gamePiece> pieces;
+	private LinkedList<die> dice;
 	private String name;
-	private LinkedList<String> history;
+	private LinkedList<int[]> history;
+	private Context context;
 	
-	public game(String n) {
+	public game(String n, Context c) {
+		context = c;
 		name = n;
-		pieces[0] = new gamePiece("Grain");
-		pieces[1] = new gamePiece("Industrial");
-		pieces[2] = new gamePiece("Bonds");
-		pieces[3] = new gamePiece("Oil");
-		pieces[4] = new gamePiece("Silver");
-		pieces[5] = new gamePiece("Gold");
-		String[] d1 = { "Grain", "Industrial", "Bonds", "Oil", "Silver", "Gold" };
-		String[] d2 = { "Up", "Down", "Div" };
-		String[] d3 = { "10","20","5" };
-		dice[0] = new die(d1);
-		dice[1] = new die(d2);
-		dice[2] = new die(d3);
+		pieces.add(1,new gamePiece(context.getString(R.string.stock1_name)));
+		pieces.add(2,new gamePiece(context.getString(R.string.stock2_name)));
+		pieces.add(3,new gamePiece(context.getString(R.string.stock3_name)));
+		pieces.add(4,new gamePiece(context.getString(R.string.stock4_name)));
+		pieces.add(5,new gamePiece(context.getString(R.string.stock5_name)));
+		pieces.add(6,new gamePiece(context.getString(R.string.stock6_name)));
+		dice.add(0,new die(6));
+		dice.add(1,new die(3));
+		dice.add(2,new die(3));
 	}
 	
-	public String roll() {
-		gamePiece piece = getPiece(dice[0].rollDie());
-		String action = dice[1].rollDie();
-		String result = "";
-		if (action == "Div") {
+	public int[] roll() {
+		int[] result = new int[3];
+		result[0] = dice.get(0).rollDie();
+		gamePiece piece = pieces.get(result[0]);
+		result[1] = dice.get(1).rollDie();
+		if (result[1] == 0) {
 			if (piece.isDiv()) {
-				result = piece.getName() + " " + action + " " + dice[2].rollDie();
+				result[2] = dice.get(2).rollDie();
 			}
 			else {
-				result =  piece.getName() + " Not Paying";
+				result[2] =  0;
 			}
 		}
-		else if (action == "Up") {
-			String roll = dice[2].rollDie();
-			if (piece.up(Integer.parseInt(roll))) {
-				result =  piece.getName() + " SPLIT!!";
-			}
-			else {
-				result = piece.getName() + " Up " + roll;
+		else if (result[1] == 1) {
+			result[2] = dice.get(2).rollDie();
+			if (piece.up(result[2])) {
+				result[2] =  0;
 			}
 		}
 		else {
-			String roll = dice[2].rollDie();
-			if (piece.down(Integer.parseInt(roll))) {
-				result = piece.getName() + " RESETS!!";
-			}
-			else {
-				result = piece.getName() + " Down " + roll;
+			result[2] = dice.get(2).rollDie();
+			if (piece.down(result[2])) {
+				result[2] = 0;
 			}
 		}
 		history.add(result);
 		return result;
 	}
 	
-	private gamePiece getPiece(String n) {
-		for (int x = 0; x < pieces.length; x++) {
-			if (pieces[x].getName() == n) {
-				return pieces[x];
-			}
-		}
-		
-		return pieces[0];
-	}
-	
-	public gamePiece[] getPieces() {
+	public LinkedList<gamePiece> getPieces() {
 		return pieces;
 	}
 	
@@ -76,7 +62,7 @@ public class game {
 		return name;
 	}
 	
-	public LinkedList<String> getHistory() {
+	public LinkedList<int[]> getHistory() {
 		return history;
 	}
 }
