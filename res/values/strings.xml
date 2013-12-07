@@ -21,5 +21,9 @@
     <string name="action1_name">Div</string>
     <string name="action2_name">Up</string>
     <string name="action3_name">Down</string>
+    <string name="down_arrow">Down Arrow</string>
+    <string name="up_arrow">Up Arrow</string>
+    <string name="net_worth_label">Net Worth:</string>
+    <string name="roll_info_label">Last Roll:</string>
 
 </resources>

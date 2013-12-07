@@ -3,7 +3,11 @@ package com.haggerdfix.stockmarketgame;
 import java.util.LinkedList;
 
 import android.app.Activity;
+import android.net.nsd.NsdServiceInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -13,15 +17,44 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	private static game game;
+	private TextView rollInfo;
+	private Handler mUpdateHandler;
+	private int localPort;
+	NsdHelper mNsdHelper;
+    public static final String TAG = "StockTicker";
+    ChatConnection mConnection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		TextView rollInfo = (TextView) findViewById(R.id.rollInfo);
+		
+		mUpdateHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+            	String chatLine = msg.getData().getString("msg");
+            	updateRoll(chatLine);
+            }
+		};
+
+        mConnection = new ChatConnection(mUpdateHandler);
+        
+		mNsdHelper = new NsdHelper(this);
+		mNsdHelper.initializeNsd();
 	}
+	
+	public void updateRoll(String line) {
+		if (rollInfo.getVisibility() == View.INVISIBLE) {
+			rollInfo.setVisibility(View.VISIBLE);
+		}
+        rollInfo.setText(line);
+    }
 
 	public void createNewGame(View v) {
 		v = v.getRootView();
+		registerService();
 		EditText gameName = (EditText) v.findViewById(R.id.gameNameTxt);
 		TextView error = (TextView) v.findViewById(R.id.errorLbl);
 		if (gameName != null && !gameName.getText().toString().equals("")) {
@@ -33,11 +66,14 @@ public class MainActivity extends Activity {
 			Button newGameBtn = (Button) v.findViewById(R.id.new_game_button);
 			newGameBtn.setVisibility(View.GONE);
 			error.setVisibility(View.INVISIBLE);
-			Button rollBtn = (Button) v.findViewById(R.id.roll_button);
-			rollBtn.setVisibility(View.VISIBLE);
-			/*TextView rollCount = (TextView) v.findViewById(R.id.rollCount);
+			Button startBtn = (Button) v.findViewById(R.id.start_button);
+			startBtn.setVisibility(View.VISIBLE);
+			updateRoll("Don't press 'Start' until everyone has connected and is 'Ready'");
+			
+			//Debug stuff!
+			TextView rollCount = (TextView) v.findViewById(R.id.rollCount);
 			rollCount.setText("0");
-			rollCount.setVisibility(View.VISIBLE);*/
+			rollCount.setVisibility(View.VISIBLE);
 			
 			refreshAllLabels(v.getRootView());
 
@@ -47,21 +83,33 @@ public class MainActivity extends Activity {
 			error.setVisibility(View.VISIBLE);
 		}
 	}
+	
+
+	public void startButton(View v) {
+		v = v.getRootView();
+		NsdServiceInfo service = mNsdHelper.getChosenServiceInfo();
+        if (service != null) {
+            Log.d(TAG, "Connecting.");
+            mConnection.connectToServer(service.getHost(),service.getPort());
+        } else {
+            Log.d(TAG, "No service to connect to!");
+        }
+		Button rollBtn = (Button) v.findViewById(R.id.roll_button);
+		rollBtn.setVisibility(View.VISIBLE);
+		Button startBtn = (Button) v.findViewById(R.id.start_button);
+		startBtn.setVisibility(View.INVISIBLE);
+		updateRoll(roll());
+	}
 
 	public void rollButton(View v) {
-		v = v.getRootView();
-		TextView rollInfo = (TextView) v.findViewById(R.id.rollInfo);
-		rollInfo.setText(roll());
-		if (rollInfo.getVisibility() == View.INVISIBLE) {
-			rollInfo.setVisibility(View.VISIBLE);
-		}
-		refreshAllLabels(v);
+		updateRoll(roll());
 	}
 	
 	public String roll() {
 		String result = "";
 		int[] roll = game.roll();
-		
+		String msg = String.valueOf(roll[0]) + "," + String.valueOf(roll[1]) + "," + String.valueOf(roll[2]);
+		mConnection.sendMessage(msg);
 		result = game.getPieces().get(roll[0]).getName() + " ";
 		if (roll[2] == 0) {
 			switch (roll[1]) {
@@ -176,6 +224,15 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
+	
+	private void registerService() {
+		localPort = mConnection.getLocalPort();
+		if(localPort > -1) {
+            mNsdHelper.registerService(localPort);
+        } else {
+            Log.d(TAG, "ServerSocket isn't bound.");
+        }
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,5 +240,27 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
+    @Override
+    protected void onPause() {
+        if (mNsdHelper != null) {
+            mNsdHelper.stopDiscovery();
+        }
+        super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mNsdHelper != null) {
+            mNsdHelper.discoverServices();
+        }
+    }
+    
+    @Override
+    protected void onDestroy() {
+        mNsdHelper.tearDown();
+        super.onDestroy();
+    }
 
 }
