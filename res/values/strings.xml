@@ -25,5 +25,8 @@
     <string name="up_arrow">Up Arrow</string>
     <string name="net_worth_label">Net Worth:</string>
     <string name="roll_info_label">Last Roll:</string>
+    <string name="join_button">Join Game</string>
+    <string name="ready_button">Ready!</string>
+    <string name="start_button">START!</string>
 
 </resources>

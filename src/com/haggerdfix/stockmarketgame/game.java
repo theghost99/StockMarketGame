@@ -40,15 +40,11 @@ public class game {
 		}
 		else if (result[1] == 1) {
 			result[2] = dice.get(2).rollDie();
-			if (piece.up(result[2])) {
-				result[2] =  0;
-			}
+			piece.up(result[2]);
 		}
 		else {
 			result[2] = dice.get(2).rollDie();
-			if (piece.down(result[2])) {
-				result[2] = 0;
-			}
+			piece.down(result[2]);
 		}
 		history.add(result);
 		return result;

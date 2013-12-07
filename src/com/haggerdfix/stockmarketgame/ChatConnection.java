@@ -54,6 +54,15 @@ public class ChatConnection {
         mChatServer.tearDown();
         mChatClient.tearDown();
     }
+    
+    public boolean isConnected() {
+    	if (mSocket != null) {
+            return true;
+        }
+    	else {
+    		return false;
+    	}
+    }
 
     public void connectToServer(InetAddress address, int port) {
         mChatClient = new ChatClient(address, port);
