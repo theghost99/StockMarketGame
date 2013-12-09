@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 	private int localPort;
 	NsdHelper mNsdHelper;
     public static final String TAG = "StockTicker";
-    ChatConnection mConnection;
+    LinkedList<ChatConnection> mConnection = new LinkedList<ChatConnection>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
             }
 		};
 
-        mConnection = new ChatConnection(mUpdateHandler);
+        mConnection.add(new ChatConnection(mUpdateHandler));
         
 		mNsdHelper = new NsdHelper(this);
 		mNsdHelper.initializeNsd();
@@ -50,6 +50,14 @@ public class MainActivity extends Activity {
 	public void joinButton(View v) {
 		v = v.getRootView();
 		mNsdHelper.discoverServices();
+		NsdServiceInfo service = mNsdHelper.getChosenServiceInfo();
+        if (service != null) {
+            Log.d(TAG, "Connecting.");
+            mConnection.getLast().connectToServer(service.getHost(),service.getPort());
+            mConnection.getLast().sendMessage("connected");
+        } else {
+            Log.d(TAG, "No service to connect to!");
+        }
 		player = new Player(this);
 		
 		//hide UI buttons
@@ -184,13 +192,6 @@ public class MainActivity extends Activity {
 	
 	public void readyButton(View v) {
 		v.setVisibility(View.INVISIBLE);
-		NsdServiceInfo service = mNsdHelper.getChosenServiceInfo();
-        if (service != null) {
-            Log.d(TAG, "Connecting.");
-            mConnection.connectToServer(service.getHost(),service.getPort());
-        } else {
-            Log.d(TAG, "No service to connect to!");
-        }
         
         v = v.getRootView();
         
@@ -206,25 +207,51 @@ public class MainActivity extends Activity {
 	}
 	
 	public void buyStock(View v) {
-		
+		Button upBtn = (Button) v;
+		int s = Integer.parseInt(upBtn.getText().toString().substring(upBtn.getText().toString().length() - 1)) - 1;
+		v = v.getRootView();
+		Button joinBtn = (Button) v.findViewById(R.id.join_button);
+		if (joinBtn.getVisibility() == View.VISIBLE && player.getCash() >= 500) {
+			player.buyStock(s, 500);
+		}
+		else {
+			
+		}
 	}
 	
 	public void sellStock(View v) {
+		Button upBtn = (Button) v;
+		int s = Integer.parseInt(upBtn.getText().toString().substring(upBtn.getText().toString().length() - 1)) - 1;
+		v = v.getRootView();
+		Button joinBtn = (Button) v.findViewById(R.id.join_button);
+		if (joinBtn.getVisibility() == View.VISIBLE && player.getStockAmount(s) >= 500) {
+			player.sellStock(s, 500);
+		}
+		else {
+			
+		}
 		
 	}
 	
 	public void updateRoll(String line) {
 
-		int[] roll = parseRoll(line);
-		rollInfo.setText(roll(roll));
+		if (line.equalsIgnoreCase("connected") && game != null) {
+	        mConnection.add(new ChatConnection(mUpdateHandler));
+	        mNsdHelper.tearDown();
+	        registerService();
+		}
+		else {
+			int[] roll = parseRoll(line);
+			rollInfo.setText(roll(roll));
 		
-        if (game != null) {
-        	refreshAllLabels();
-        }
-        else if (player != null){
-        	player.roll(roll);
-    		updatePlayerView();
-        }
+			if (game != null) {
+				refreshAllLabels();
+			}
+			else if (player != null){
+				player.roll(roll);
+				updatePlayerView();
+			}
+		}
     }
 	
 	public int[] parseRoll(String r) {
@@ -277,7 +304,7 @@ public class MainActivity extends Activity {
 		NsdServiceInfo service = mNsdHelper.getChosenServiceInfo();
         if (service != null) {
             Log.d(TAG, "Connecting.");
-            mConnection.connectToServer(service.getHost(),service.getPort());
+            mConnection.getLast().connectToServer(service.getHost(),service.getPort());
         } else {
             Log.d(TAG, "No service to connect to!");
         }
@@ -287,8 +314,12 @@ public class MainActivity extends Activity {
 		startBtn.setVisibility(View.INVISIBLE);
 		int[] roll = game.roll();
 		String msg = String.valueOf(roll[0]) + "," + String.valueOf(roll[1]) + "," + String.valueOf(roll[2]);
-		if (mConnection.isConnected()) {
-			mConnection.sendMessage(msg);
+		if (mConnection.getFirst().isConnected()) {
+			for (int x = 0; x < mConnection.size(); x++) {
+				if (mConnection.get(x).isConnected()) {
+					mConnection.get(x).sendMessage(msg);
+				}
+			}
 		}
 		else {
 			updateRoll(msg);
@@ -298,8 +329,12 @@ public class MainActivity extends Activity {
 	public void rollButton(View v) {
 		int[] roll = game.roll();
 		String msg = String.valueOf(roll[0]) + "," + String.valueOf(roll[1]) + "," + String.valueOf(roll[2]);
-		if (mConnection.isConnected()) {
-			mConnection.sendMessage(msg);
+		if (mConnection.getFirst().isConnected()) {
+			for (int x = 0; x < mConnection.size(); x++) {
+				if (mConnection.get(x).isConnected()) {
+					mConnection.get(x).sendMessage(msg);
+				}
+			}
 		}
 		else {
 			updateRoll(msg);
@@ -445,7 +480,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void registerService() {
-		localPort = mConnection.getLocalPort();
+		localPort = mConnection.getLast().getLocalPort();
 		if(localPort > -1) {
             mNsdHelper.registerService(localPort);
         } else {
@@ -479,7 +514,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         mNsdHelper.tearDown();
-        mConnection.tearDown();
+        for (int x = 0; x < mConnection.size(); x++) {
+        	mConnection.get(x).tearDown();
+        }
         super.onDestroy();
     }
 
